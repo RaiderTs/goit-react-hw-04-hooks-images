@@ -8,15 +8,25 @@ import ImagesInfo from './components/ImagesInfo';
 
 function App() {
   const [imageName, setImageName] = useState('');
+  const [images, setImages] = useState([]);
+  const [page, setPage] = useState(1);
 
   const handleFormSubmit = name => {
     setImageName(name);
+    setImages([]);
+    setPage(1);
   };
 
   return (
     <>
       <Searchbar onSubmit={handleFormSubmit} />
-      <ImagesInfo imageName={imageName} />
+      <ImagesInfo
+        imageName={imageName}
+        images={images}
+        page={page}
+        setImages={setImages}
+        setPage={setPage}
+      />
       <ToastContainer autoClose={3000} />
     </>
   );

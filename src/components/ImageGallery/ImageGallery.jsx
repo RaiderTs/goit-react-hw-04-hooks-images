@@ -5,9 +5,9 @@ import style from './ImageGallery.module.css';
 function ImageGallery({ images }) {
   return (
     <ul className={style.list}>
-      {images.map(image => (
-        <ImageGalleryItem 
-          key={image.id}
+      {images.map((image, index) => (
+        <ImageGalleryItem
+          key={index}
           src={image.webformatURL}
           alt={image.tags}
           largeImageUrl={image.largeImageURL}
