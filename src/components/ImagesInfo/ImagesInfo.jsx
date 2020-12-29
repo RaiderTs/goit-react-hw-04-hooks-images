@@ -6,16 +6,16 @@ import Loader from '../Loader';
 import ImageGallery from '../ImageGallery';
 import Button from '../Button';
 
-const Status = {
-  IDLE: 'idle',
-  PENDING: 'pending',
-  RESOLVED: 'resolved',
-  REJECTED: 'rejected',
-};
+// const Status = {
+//   IDLE: 'idle',
+//   PENDING: 'pending',
+//   RESOLVED: 'resolved',
+//   REJECTED: 'rejected',
+// };
 
 function ImagesInfo({ imageName, images, page, setImages, setPage }) {
-  const [error, setError] = useState({});
-  const [status, setStatus] = useState(Status.IDLE);
+  const [error, setError] = useState(null);
+  // const [status, setStatus] = useState(Status.IDLE);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ function ImagesInfo({ imageName, images, page, setImages, setPage }) {
   };
 
   const fetchImages = () => {
-    setStatus(Status.PENDING);
+    // setStatus(Status.PENDING);
     setIsLoading(isLoading => !isLoading);
 
     apiService
@@ -49,38 +49,43 @@ function ImagesInfo({ imageName, images, page, setImages, setPage }) {
         if (newImages.total !== 0) {
           setImages(prevImages => [...prevImages, ...newImages.hits]);
           setPage(page => page + 1);
-          setStatus(Status.RESOLVED);
+          // setStatus(Status.RESOLVED);
         } else return Promise.reject(new Error('Invalid request'));
       })
       .catch(error => {
         setError(error);
-        setStatus(Status.REJECTED);
+        // setStatus(Status.REJECTED);
       })
       .finally(() => setIsLoading(isLoading => !isLoading));
   };
 
-  if (status === Status.IDLE) {
-    return <p>Please enter your request</p>;
-  }
+  // if (status === Status.IDLE) {
+  //   return <p>Please enter your request</p>;
+  // }
 
-  if (status === Status.PENDING) {
-    return <Loader isLoading={isLoading} />;
-  }
+  // if (status === Status.PENDING) {
+  //   return <Loader isLoading={isLoading} />;
+  // }
 
-  if (status === Status.REJECTED) {
-    return <ErrorImage message={error.message} />;
-  }
+  // if (status === Status.REJECTED) {
+  //   return <ErrorImage message={error.message} />;
+  // }
 
-  if (status === Status.RESOLVED) {
-    return (
-      <>
-        <ImageGallery images={images} />
-        {/* page={this.state.page} */}
+  // if (status === Status.RESOLVED) {
+  return (
+    <>
+      {error && <ErrorImage textError={error} />}
+      <ImageGallery images={images} />
+      <Loader isLoading={isLoading} />
+      {/* page={this.state.page} */}
+      {/* <Button onClick={fetchImages} /> */}
+      {images.length > 0 && !isLoading && !error && (
         <Button onClick={fetchImages} />
-      </>
-    );
-  }
+      )}
+    </>
+  );
 }
+// }
 
 ImagesInfo.propTypes = {
   imageName: PropTypes.string.isRequired,
